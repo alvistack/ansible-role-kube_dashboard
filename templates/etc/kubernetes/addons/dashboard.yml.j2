@@ -20,6 +20,8 @@ metadata:
   name: kubernetes-dashboard-certs
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 type: Opaque
 
@@ -30,6 +32,8 @@ metadata:
   name: kubernetes-dashboard
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 
 ---
@@ -39,6 +43,8 @@ metadata:
   name: kubernetes-dashboard-minimal
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 rules:
   # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
@@ -76,6 +82,8 @@ metadata:
   name: kubernetes-dashboard-minimal
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: EnsureExists
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -155,6 +163,8 @@ metadata:
   name: kubernetes-dashboard
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   ports:
