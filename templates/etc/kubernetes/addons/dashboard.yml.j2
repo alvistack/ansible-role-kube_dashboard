@@ -22,6 +22,7 @@ metadata:
   labels:
     addonmanager.kubernetes.io/mode: Reconcile
 type: Opaque
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -30,6 +31,7 @@ metadata:
   namespace: kube-system
   labels:
     addonmanager.kubernetes.io/mode: Reconcile
+
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -66,6 +68,7 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
     verbs: ["get"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -82,6 +85,7 @@ subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
     namespace: kube-system
+
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -143,6 +147,7 @@ spec:
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
+
 ---
 kind: Service
 apiVersion: v1
