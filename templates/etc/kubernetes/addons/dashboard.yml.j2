@@ -20,8 +20,11 @@ metadata:
   name: kubernetes-dashboard-certs
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 type: Opaque
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -29,14 +32,19 @@ metadata:
   name: kubernetes-dashboard
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
+
 ---
-kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
   name: kubernetes-dashboard-minimal
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 rules:
   # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
@@ -66,6 +74,7 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
     verbs: ["get"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -73,6 +82,8 @@ metadata:
   name: kubernetes-dashboard-minimal
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: EnsureExists
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -82,9 +93,10 @@ subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
     namespace: kube-system
+
 ---
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: kubernetes-dashboard
   namespace: kube-system
@@ -143,13 +155,16 @@ spec:
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
+
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: kubernetes-dashboard
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   ports:
