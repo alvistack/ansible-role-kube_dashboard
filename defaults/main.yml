@@ -14,8 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# socat version.
+socat_version: "1.0.3"
+
+# ImageRepository sets the container registry to pull images from.
+socat_image_repository: "docker.io/alpine"
+
 # Dashboard version.
 dashboard_version: "v1.10.1"
 
 # ImageRepository sets the container registry to pull images from.
 dashboard_image_repository: "k8s.gcr.io"
+
+# Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
+dashboard_service_type: "ClusterIP"
+
+# `spec.externalName` for `ExternalName`.
+dashboard_external_name: ~
+
+# externalTrafficPolicy (`None`, `Local` or `Cluster`).
+dashboard_external_traffic_policy: ~

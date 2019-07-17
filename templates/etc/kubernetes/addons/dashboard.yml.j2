@@ -167,9 +167,54 @@ metadata:
     app.kubernetes.io/part-of: kube-system
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
-  ports:
-    - port: 443
-      targetPort: 8443
+  type: {{ dashboard_service_type }}
+{% if dashboard_service_type == 'ExternalName' %}
+  externalName: {{ dashboard_external_name }}
+{% endif %}
+{% if dashboard_external_traffic_policy %}
+  externalTrafficPolicy: {{ dashboard_external_traffic_policy }}
+{% endif %}
   selector:
     app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/part-of: kube-system
+    addonmanager.kubernetes.io/mode: Reconcile
+  ports:
+    - name: https
+      port: 8443
+      targetPort: 8443
+{% if dashboard_service_type == 'ClusterIP' %}
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kubernetes-dashboard-proxy
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard-proxy
+    app.kubernetes.io/part-of: kube-system
+    addonmanager.kubernetes.io/mode: Reconcile
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubernetes-dashboard-proxy
+      app.kubernetes.io/part-of: kube-system
+      addonmanager.kubernetes.io/mode: Reconcile
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kubernetes-dashboard-proxy
+        app.kubernetes.io/part-of: kube-system
+        addonmanager.kubernetes.io/mode: Reconcile
+    spec:
+      containers:
+        - name: https
+          image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          args:
+            - tcp-listen:8443,fork,reuseaddr
+            - tcp:kubernetes-dashboard:8443
+          ports:
+            - name: https
+              containerPort: 8443
+              hostPort: 8443
+{%- endif -%}
