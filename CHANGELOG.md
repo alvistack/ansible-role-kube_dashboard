@@ -4,6 +4,7 @@
 
 ### Major Changes
 
+  - Update LXD test profile for openSUSE LEAP 15.1
   - Support ClusterIP with `alpine/socat`
 
 ## 3.2.0 - 2019-07-08
