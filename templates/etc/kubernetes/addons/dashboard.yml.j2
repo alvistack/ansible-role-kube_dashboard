@@ -43,7 +43,7 @@ metadata:
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/part-of: kubernetes-dashboard
-    addonmanager.kubernetes.io/mode: Reconcile
+    addonmanager.kubernetes.io/mode: EnsureExists
 type: Opaque
 
 ---
@@ -55,10 +55,8 @@ metadata:
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/part-of: kubernetes-dashboard
-    addonmanager.kubernetes.io/mode: Reconcile
+    addonmanager.kubernetes.io/mode: EnsureExists
 type: Opaque
-data:
-  csrf: ""
 
 ---
 apiVersion: v1
@@ -69,7 +67,7 @@ metadata:
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/part-of: kubernetes-dashboard
-    addonmanager.kubernetes.io/mode: Reconcile
+    addonmanager.kubernetes.io/mode: EnsureExists
 type: Opaque
 
 ---
