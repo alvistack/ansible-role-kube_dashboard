@@ -21,10 +21,16 @@ socat_version: "1.0.3"
 socat_image_repository: "docker.io/alpine"
 
 # Dashboard version.
-dashboard_version: "v1.10.1"
+dashboard_version: "v2.0.0-beta4"
 
 # ImageRepository sets the container registry to pull images from.
-dashboard_image_repository: "k8s.gcr.io"
+dashboard_image_repository: "kubernetesui"
+
+# Dashboard metrics scraper version.
+dashboard_metrics_scraper_version: "v1.0.1"
+
+# ImageRepository sets the container registry to pull images from.
+dashboard_metrics_scraper_image_repository: "kubernetesui"
 
 # Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
 dashboard_service_type: "ClusterIP"
@@ -34,3 +40,12 @@ dashboard_external_name: ~
 
 # externalTrafficPolicy (`None`, `Local` or `Cluster`).
 dashboard_external_traffic_policy: ~
+
+# Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
+dashboard_metrics_scraper_service_type: "ClusterIP"
+
+# `spec.externalName` for `ExternalName`.
+dashboard_metrics_scraper_external_name: ~
+
+# externalTrafficPolicy (`None`, `Local` or `Cluster`).
+dashboard_metrics_scraper_external_traffic_policy: ~
