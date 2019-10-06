@@ -15,14 +15,59 @@
 # limitations under the License.
 
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubernetes-dashboard-settings
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+
+---
+apiVersion: v1
 kind: Secret
 metadata:
   name: kubernetes-dashboard-certs
-  namespace: kube-system
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
-    addonmanager.kubernetes.io/mode: Reconcile
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: EnsureExists
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-dashboard-csrf
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: EnsureExists
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-dashboard-key-holder
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: EnsureExists
 type: Opaque
 
 ---
@@ -30,69 +75,76 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: kubernetes-dashboard-minimal
-  namespace: kube-system
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 rules:
-  # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
+  # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["create"]
-    # Allow Dashboard to create 'kubernetes-dashboard-settings' config map.
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["create"]
-    # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
-  - apiGroups: [""]
-    resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs"]
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
     verbs: ["get", "update", "delete"]
-    # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
+  # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
   - apiGroups: [""]
     resources: ["configmaps"]
     resourceNames: ["kubernetes-dashboard-settings"]
     verbs: ["get", "update"]
-    # Allow Dashboard to get metrics from heapster.
+  # Allow Dashboard to get metrics.
   - apiGroups: [""]
     resources: ["services"]
-    resourceNames: ["heapster"]
+    resourceNames: ["heapster", "dashboard-metrics-scraper"]
     verbs: ["proxy"]
   - apiGroups: [""]
     resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
+    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: kubernetes-dashboard-minimal
-  namespace: kube-system
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: EnsureExists
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 roleRef:
   kind: Role
-  name: kubernetes-dashboard-minimal
+  name: kubernetes-dashboard
   apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+rules:
+  # Allow Metrics Scraper to get metrics from the Metrics server
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list", "watch"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -101,15 +153,15 @@ metadata:
   name: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: EnsureExists
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 roleRef:
   kind: ClusterRole
-  name: cluster-admin
+  name: kubernetes-dashboard
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -117,10 +169,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   replicas: 1
@@ -128,23 +180,24 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: kubernetes-dashboard
-      app.kubernetes.io/part-of: kube-system
+      app.kubernetes.io/part-of: kubernetes-dashboard
       addonmanager.kubernetes.io/mode: Reconcile
   template:
     metadata:
       labels:
         app.kubernetes.io/name: kubernetes-dashboard
-        app.kubernetes.io/part-of: kube-system
+        app.kubernetes.io/part-of: kubernetes-dashboard
         addonmanager.kubernetes.io/mode: Reconcile
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: {{ dashboard_image_repository }}/kubernetes-dashboard-amd64:{{ dashboard_version }}
+          image: {{ dashboard_image_repository }}/dashboard:{{ dashboard_version }}
           ports:
             - containerPort: 8443
               protocol: TCP
           args:
             - --auto-generate-certificates
+            - --namespace=kubernetes-dashboard
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -152,7 +205,7 @@ spec:
           volumeMounts:
             - name: kubernetes-dashboard-certs
               mountPath: /certs
-              # Create on-disk volume to store exec logs
+            # Create on-disk volume to store exec logs
             - mountPath: /tmp
               name: tmp-volume
           livenessProbe:
@@ -179,10 +232,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   type: {{ dashboard_service_type }}
@@ -194,7 +247,7 @@ spec:
 {% endif %}
   selector:
     app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
   ports:
     - name: https
@@ -207,22 +260,22 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: kubernetes-dashboard-proxy
-  namespace: kube-system
+  namespace: kubernetes-dashboard
   labels:
     app.kubernetes.io/name: kubernetes-dashboard-proxy
-    app.kubernetes.io/part-of: kube-system
+    app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: kubernetes-dashboard-proxy
-      app.kubernetes.io/part-of: kube-system
+      app.kubernetes.io/part-of: kubernetes-dashboard
       addonmanager.kubernetes.io/mode: Reconcile
   template:
     metadata:
       labels:
         app.kubernetes.io/name: kubernetes-dashboard-proxy
-        app.kubernetes.io/part-of: kube-system
+        app.kubernetes.io/part-of: kubernetes-dashboard
         addonmanager.kubernetes.io/mode: Reconcile
     spec:
       containers:
@@ -235,4 +288,117 @@ spec:
             - name: https
               containerPort: 8443
               hostPort: 8443
-{%- endif -%}
+{% endif %}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: dashboard-metrics-scraper
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashboard-metrics-scraper
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      addonmanager.kubernetes.io/mode: Reconcile
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashboard-metrics-scraper
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        addonmanager.kubernetes.io/mode: Reconcile
+    spec:
+      containers:
+        - name: dashboard-metrics-scraper
+          image: {{ dashboard_metrics_scraper_image_repository }}/metrics-scraper:{{ dashboard_metrics_scraper_version }}
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+      serviceAccountName: kubernetes-dashboard
+      # Comment the following tolerations if Dashboard must not be deployed on master
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: dashboard-metrics-scraper
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+spec:
+  type: {{ dashboard_metrics_scraper_service_type }}
+{% if dashboard_metrics_scraper_service_type == 'ExternalName' %}
+  externalName: {{ dashboard_metrics_scraper_external_name }}
+{% endif %}
+{% if dashboard_metrics_scraper_external_traffic_policy %}
+  externalTrafficPolicy: {{ dashboard_metrics_scraper_external_traffic_policy }}
+{% endif %}
+  selector:
+    app.kubernetes.io/name: dashboard-metrics-scraper
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+  ports:
+    - name: metrics
+      port: 8000
+      targetPort: 8000
+{% if dashboard_metrics_scraper_service_type == 'ClusterIP' %}
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dashboard-metrics-scraper-proxy
+  namespace: kubernetes-dashboard
+  labels:
+    app.kubernetes.io/name: dashboard-metrics-scraper-proxy
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    addonmanager.kubernetes.io/mode: Reconcile
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashboard-metrics-scraper-proxy
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      addonmanager.kubernetes.io/mode: Reconcile
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashboard-metrics-scraper-proxy
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        addonmanager.kubernetes.io/mode: Reconcile
+    spec:
+      containers:
+        - name: metrics
+          image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          args:
+            - tcp-listen:8000,fork,reuseaddr
+            - tcp:dashboard-metrics-scraper:8000
+          ports:
+            - name: metrics
+              containerPort: 8000
+              hostPort: 8000
+{% endif %}
