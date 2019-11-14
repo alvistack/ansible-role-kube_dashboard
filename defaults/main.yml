@@ -24,13 +24,13 @@ socat_image_repository: "docker.io/alpine"
 dashboard_version: "v2.0.0-beta5"
 
 # ImageRepository sets the container registry to pull images from.
-dashboard_image_repository: "kubernetesui"
+dashboard_image_repository: "docker.io/kubernetesui"
 
 # Dashboard metrics scraper version.
 dashboard_metrics_scraper_version: "v1.0.1"
 
 # ImageRepository sets the container registry to pull images from.
-dashboard_metrics_scraper_image_repository: "kubernetesui"
+dashboard_metrics_scraper_image_repository: "docker.io/kubernetesui"
 
 # Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
 dashboard_service_type: "ClusterIP"
