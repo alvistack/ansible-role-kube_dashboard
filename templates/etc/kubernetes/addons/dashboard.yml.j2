@@ -295,6 +295,13 @@ spec:
             - name: https
               containerPort: 8443
               hostPort: 8443
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8443
 {% endif %}
 
 ---
@@ -417,4 +424,11 @@ spec:
             - name: metrics
               containerPort: 8000
               hostPort: 8000
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8000
 {% endif %}
