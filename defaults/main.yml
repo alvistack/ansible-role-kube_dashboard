@@ -21,13 +21,13 @@ socat_version: "1.0.5"
 socat_image_repository: "docker.io/alpine"
 
 # Dashboard version.
-dashboard_version: "v2.0.0-beta8"
+dashboard_version: "v2.0.0-rc1"
 
 # ImageRepository sets the container registry to pull images from.
 dashboard_image_repository: "docker.io/kubernetesui"
 
 # Dashboard metrics scraper version.
-dashboard_metrics_scraper_version: "v1.0.1"
+dashboard_metrics_scraper_version: "v1.0.2"
 
 # ImageRepository sets the container registry to pull images from.
 dashboard_metrics_scraper_image_repository: "docker.io/kubernetesui"
