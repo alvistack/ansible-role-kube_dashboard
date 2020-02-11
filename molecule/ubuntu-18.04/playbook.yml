@@ -24,7 +24,7 @@
     - role: kubernetes-cni
     - role: kubectl
 
-- hosts: kube-master
+- hosts: all
   remote_user: root
   become: true
   roles:
@@ -42,7 +42,7 @@
       register: result
       changed_when: result is not succeeded
 
-- hosts: kube-master
+- hosts: all
   remote_user: root
   become: true
   roles:
