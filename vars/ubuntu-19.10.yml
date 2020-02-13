@@ -13,19 +13,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-- hosts: all
-  remote_user: root
-  become: true
-  roles:
-    - role: bootstrap
-    - role: python
-    - role: docker
-    - role: kubernetes-cni
-    - role: kubectl
-    - role: minikube
-      kubelet_node_ip: "{{ ansible_eth1.ipv4.address }}"
-    - role: kubernetes-addon-manager
-    - role: kubernetes-flannel
-      flannel_iface: "eth1"
-    - role: kubernetes-dashboard
