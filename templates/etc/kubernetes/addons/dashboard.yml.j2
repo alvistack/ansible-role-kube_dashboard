@@ -261,10 +261,10 @@ spec:
   type: {{ dashboard_service_type }}
 {% if dashboard_service_type == 'ExternalName' %}
   externalName: {{ dashboard_external_name }}
-{%- endif %}
+{% endif %}
 {% if dashboard_external_traffic_policy %}
   externalTrafficPolicy: {{ dashboard_external_traffic_policy }}
-{%- endif %}
+{% endif %}
   selector:
     app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/part-of: kubernetes-dashboard
@@ -315,7 +315,7 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 8443
-{%- endif %}
+{% endif %}
 
 ---
 apiVersion: apps/v1
@@ -390,10 +390,10 @@ spec:
   type: {{ dashboard_metrics_scraper_service_type }}
 {% if dashboard_metrics_scraper_service_type == 'ExternalName' %}
   externalName: {{ dashboard_metrics_scraper_external_name }}
-{%- endif %}
+{% endif %}
 {% if dashboard_metrics_scraper_external_traffic_policy %}
   externalTrafficPolicy: {{ dashboard_metrics_scraper_external_traffic_policy }}
-{%- endif %}
+{% endif %}
   selector:
     app.kubernetes.io/name: dashboard-metrics-scraper
     app.kubernetes.io/part-of: kubernetes-dashboard
@@ -444,4 +444,4 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 8000
-{%- endif %}
+{% endif %}
