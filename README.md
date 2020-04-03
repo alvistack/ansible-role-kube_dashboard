@@ -1,6 +1,6 @@
 # Ansible Role for Dashboard on Kubernetes
 
-[![Travis](https://img.shields.io/travis/alvistack/ansible-role-kubernetes_dashboard.svg)](https://travis-ci.org/alvistack/ansible-role-kubernetes_dashboard)
+[![Travis](https://img.shields.io/travis/com/alvistack/ansible-role-kubernetes_dashboard.svg)](https://travis-ci.com/alvistack/ansible-role-kubernetes_dashboard)
 [![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-kubernetes_dashboard.svg)](https://github.com/alvistack/ansible-role-kubernetes_dashboard)
 [![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-kubernetes_dashboard.svg)](https://github.com/alvistack/ansible-role-kubernetes_dashboard/blob/master/LICENSE)
 [![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.kubernetes_dashboard-blue.svg)](https://galaxy.ansible.com/alvistack/kubernetes_dashboard)
