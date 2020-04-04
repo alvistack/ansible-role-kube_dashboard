@@ -69,3 +69,7 @@
 - name: kubernetes_addon_manager
   src: https://github.com/alvistack/ansible-role-kubernetes_addon_manager
   version: develop
+
+- name: kubernetes_weave
+  src: https://github.com/alvistack/ansible-role-kubernetes_weave
+  version: develop
