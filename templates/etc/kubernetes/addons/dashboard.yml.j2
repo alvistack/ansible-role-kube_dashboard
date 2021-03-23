@@ -192,6 +192,7 @@ spec:
       containers:
         - name: kubernetes-dashboard
           image: {{ dashboard_image_repository }}/dashboard:{{ dashboard_version }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8443
               protocol: TCP
@@ -301,6 +302,7 @@ spec:
       containers:
         - name: https
           image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8443,fork,reuseaddr
             - tcp:kubernetes-dashboard:443
@@ -347,6 +349,7 @@ spec:
       containers:
         - name: dashboard-metrics-scraper
           image: {{ dashboard_metrics_scraper_image_repository }}/metrics-scraper:{{ dashboard_metrics_scraper_version }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -430,6 +433,7 @@ spec:
       containers:
         - name: metrics
           image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8000,fork,reuseaddr
             - tcp:dashboard-metrics-scraper:8000
