@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # socat version.
-socat_version: "1.7.3.4-r0"
+socat_version: "latest"
 
 # ImageRepository sets the container registry to pull images from.
 socat_image_repository: "docker.io/alpine"
