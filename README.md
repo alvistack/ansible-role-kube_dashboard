@@ -4,13 +4,11 @@
 [![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-kubernetes_dashboard.svg)](https://github.com/alvistack/ansible-role-kubernetes_dashboard/releases)
 [![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-kubernetes_dashboard.svg)](https://github.com/alvistack/ansible-role-kubernetes_dashboard/blob/master/LICENSE)
 [![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.kubernetes_dashboard-blue.svg)](https://galaxy.ansible.com/alvistack/kubernetes_dashboard)
-
 Ansible Role for Dashboard on Kubernetes Installation.
 
 ## Requirements
 
-This role require Ansible 4.0 or higher.
-
+This role require Ansible community package 4.1 or higher.
 This role was designed for:
 
   - Ubuntu 18.04, 20.04, 20.10, 21.04
@@ -31,10 +29,8 @@ This role was designed for:
 ## Example Playbook
 
 [molecule/default/converge.yml](molecule/default/converge.yml)
-
 This role could simply deploy to `localhost` as below:
-
-    molecule converge -s default
+molecule converge -s default
 
 ## License
 
