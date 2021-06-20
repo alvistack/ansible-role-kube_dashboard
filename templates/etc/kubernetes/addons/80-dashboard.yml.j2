@@ -191,7 +191,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: {{ dashboard_image_repository }}/dashboard:{{ dashboard_version }}
+          image: docker.io/kubernetesui/dashboard:v2.3.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8443
@@ -272,7 +272,7 @@ spec:
     addonmanager.kubernetes.io/mode: Reconcile
   ports:
     - name: https
-      port: 443
+      port: 8443
       targetPort: 8443
 {% if dashboard_service_type == 'ClusterIP' -%}
 
@@ -301,7 +301,7 @@ spec:
     spec:
       containers:
         - name: https
-          image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          image: docker.io/alpine/socat:latest
           imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8443,fork,reuseaddr
@@ -348,7 +348,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: {{ dashboard_metrics_scraper_image_repository }}/metrics-scraper:{{ dashboard_metrics_scraper_version }}
+          image: docker.io/kubernetesui/metrics-scraper:v1.0.7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
@@ -432,7 +432,7 @@ spec:
     spec:
       containers:
         - name: metrics
-          image: {{ socat_image_repository }}/socat:{{ socat_version }}
+          image: docker.io/alpine/socat:latest
           imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8000,fork,reuseaddr
