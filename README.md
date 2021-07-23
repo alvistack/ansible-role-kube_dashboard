@@ -1,6 +1,9 @@
 # Ansible Role for Dashboard on Kubernetes
 
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/ansible-role-kube_dashboard/master)](https://gitlab.com/alvistack/ansible-role-kube_dashboard/-/pipelines) [![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-kube_dashboard.svg)](https://github.com/alvistack/ansible-role-kube_dashboard/releases) [![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-kube_dashboard.svg)](https://github.com/alvistack/ansible-role-kube_dashboard/blob/master/LICENSE) [![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.kube_dashboard-blue.svg)](https://galaxy.ansible.com/alvistack/kube_dashboard)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/ansible-role-kube_dashboard/master)](https://gitlab.com/alvistack/ansible-role-kube_dashboard/-/pipelines)
+[![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-kube_dashboard.svg)](https://github.com/alvistack/ansible-role-kube_dashboard/releases)
+[![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-kube_dashboard.svg)](https://github.com/alvistack/ansible-role-kube_dashboard/blob/master/LICENSE)
+[![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.kube_dashboard-blue.svg)](https://galaxy.ansible.com/alvistack/kube_dashboard)
 
 Ansible Role for Dashboard on Kubernetes Installation.
 
