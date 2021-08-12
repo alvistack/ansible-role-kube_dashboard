@@ -259,12 +259,12 @@ metadata:
     app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
-  type: {{ dashboard_service_type }}
-{% if dashboard_service_type == 'ExternalName' -%}
-  externalName: {{ dashboard_external_name }}
+  type: {{ kube_dashboard_service_type }}
+{% if kube_dashboard_service_type == 'ExternalName' -%}
+  externalName: {{ kube_dashboard_external_name }}
 {%- endif %}
-{% if dashboard_external_traffic_policy -%}
-  externalTrafficPolicy: {{ dashboard_external_traffic_policy }}
+{% if kube_dashboard_external_traffic_policy -%}
+  externalTrafficPolicy: {{ kube_dashboard_external_traffic_policy }}
 {%- endif %}
   selector:
     app.kubernetes.io/name: kubernetes-dashboard
@@ -274,7 +274,7 @@ spec:
     - name: https
       port: 8443
       targetPort: 8443
-{% if dashboard_service_type == 'ClusterIP' -%}
+{% if kube_dashboard_service_type == 'ClusterIP' -%}
 
 ---
 apiVersion: apps/v1
@@ -390,12 +390,12 @@ metadata:
     app.kubernetes.io/part-of: kubernetes-dashboard
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
-  type: {{ dashboard_metrics_scraper_service_type }}
-{% if dashboard_metrics_scraper_service_type == 'ExternalName' -%}
-  externalName: {{ dashboard_metrics_scraper_external_name }}
+  type: {{ kube_dashboard_metrics_scraper_service_type }}
+{% if kube_dashboard_metrics_scraper_service_type == 'ExternalName' -%}
+  externalName: {{ kube_dashboard_metrics_scraper_external_name }}
 {%- endif %}
-{% if dashboard_metrics_scraper_external_traffic_policy -%}
-  externalTrafficPolicy: {{ dashboard_metrics_scraper_external_traffic_policy }}
+{% if kube_dashboard_metrics_scraper_external_traffic_policy -%}
+  externalTrafficPolicy: {{ kube_dashboard_metrics_scraper_external_traffic_policy }}
 {%- endif %}
   selector:
     app.kubernetes.io/name: dashboard-metrics-scraper
@@ -405,7 +405,7 @@ spec:
     - name: metrics
       port: 8000
       targetPort: 8000
-{% if dashboard_metrics_scraper_service_type == 'ClusterIP' -%}
+{% if kube_dashboard_metrics_scraper_service_type == 'ClusterIP' -%}
 
 ---
 apiVersion: apps/v1

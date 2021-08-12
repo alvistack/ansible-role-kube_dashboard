@@ -15,19 +15,19 @@
 # limitations under the License.
 
 # Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
-dashboard_service_type: "ClusterIP"
+kube_dashboard_service_type: "ClusterIP"
 
 # `spec.externalName` for `ExternalName`.
-dashboard_external_name: ~
+kube_dashboard_external_name: ~
 
 # externalTrafficPolicy (`None`, `Local` or `Cluster`).
-dashboard_external_traffic_policy: ~
+kube_dashboard_external_traffic_policy: ~
 
 # Deployment service type (`ClusterIP`, `NodePort`, `LoadBalancer`, or `ExternalName`).
-dashboard_metrics_scraper_service_type: "ClusterIP"
+kube_dashboard_metrics_scraper_service_type: "ClusterIP"
 
 # `spec.externalName` for `ExternalName`.
-dashboard_metrics_scraper_external_name: ~
+kube_dashboard_metrics_scraper_external_name: ~
 
 # externalTrafficPolicy (`None`, `Local` or `Cluster`).
-dashboard_metrics_scraper_external_traffic_policy: ~
+kube_dashboard_metrics_scraper_external_traffic_policy: ~
