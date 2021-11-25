@@ -191,7 +191,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: docker.io/kubernetesui/dashboard:v2.3.1
+          image: docker.io/kubernetesui/dashboard:v2.4.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8443
@@ -343,9 +343,10 @@ spec:
         app.kubernetes.io/name: dashboard-metrics-scraper
         app.kubernetes.io/part-of: kubernetes-dashboard
         addonmanager.kubernetes.io/mode: Reconcile
-      annotations:
-        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: dashboard-metrics-scraper
           image: docker.io/kubernetesui/metrics-scraper:v1.0.7
