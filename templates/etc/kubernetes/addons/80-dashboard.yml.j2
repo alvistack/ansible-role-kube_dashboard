@@ -189,9 +189,12 @@ spec:
         app.kubernetes.io/part-of: kubernetes-dashboard
         addonmanager.kubernetes.io/mode: Reconcile
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: kubernetes-dashboard
-          image: docker.io/kubernetesui/dashboard:v2.4.0
+          image: docker.io/kubernetesui/dashboard:v2.5.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8443
