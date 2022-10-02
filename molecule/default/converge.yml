@@ -20,9 +20,10 @@
   become: true
   tasks:
     - name: kubectl get --raw='/readyz?verbose'
-      ansible.builtin.shell: |
-        set -euxo pipefail
-        kubectl get --raw='/readyz?verbose' | grep 'check passed'
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          kubectl get --raw='/readyz?verbose' | grep 'check passed'
       args:
         executable: "/bin/bash"
       loop: "{{ ansible_play_hosts }}"
