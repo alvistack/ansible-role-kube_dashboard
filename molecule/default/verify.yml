@@ -24,7 +24,7 @@
         cmd: kubectl version
       register: result
       changed_when: result is not succeeded
-    
+
     - name: kubectl get pod --all-namespaces
       ansible.builtin.shell:
         cmd: |
