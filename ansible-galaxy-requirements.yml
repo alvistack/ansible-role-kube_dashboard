@@ -28,6 +28,6 @@ roles:
     src: https://github.com/alvistack/ansible-role-kube_addon_manager
     version: develop
 
-  - name: alvistack.kube_flannel
-    src: https://github.com/alvistack/ansible-role-kube_flannel
+  - name: alvistack.kube_cilium
+    src: https://github.com/alvistack/ansible-role-kube_cilium
     version: develop
