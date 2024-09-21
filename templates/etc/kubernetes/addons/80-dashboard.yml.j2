@@ -304,7 +304,7 @@ spec:
     spec:
       containers:
         - name: https
-          image: docker.io/alpine/socat:latest
+          image: docker.io/alpine/socat:1.8.0.0
           imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8443,fork,reuseaddr
@@ -436,7 +436,7 @@ spec:
     spec:
       containers:
         - name: metrics
-          image: docker.io/alpine/socat:latest
+          image: docker.io/alpine/socat:1.8.0.0
           imagePullPolicy: IfNotPresent
           args:
             - tcp-listen:8000,fork,reuseaddr
